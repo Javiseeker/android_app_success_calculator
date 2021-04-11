@@ -1,33 +1,91 @@
-import React from 'react';
+import React from "react";
+import { Paper } from "@material-ui/core";
 
-import './Layout.css';
-import Header from '../Header/Header';
-import Form from '../Form/Form';
-import Result from '../Result/Result';
-import Footer from '../Footer/Footer';
+import uruitLogo from "../../assets/uruitlogo.jfif";
+import mandalorianLogo from "../../assets/mandalorianlogo.png";
+
+import CSS from "csstype";
+import "./Layout.css";
+
+import Image from "../Utility/Image/Image";
+import Header from "../Header/Header";
+import Form from "../Form/Form";
+import Result from "../Result/Result";
+import Footer from "../Footer/Footer";
+
+import useMedia from "../../hooks/useMedia";
 
 const Layout = () => {
+  const ActivateMediaQueries = () => {
+    return {
+      isSm: useMedia("(max-width: 640px)"),
+      isMd: useMedia("(min-width: 641px) and (max-width: 1280px)"),
+      isLg: useMedia("(min-width: 1281px)"),
+    };
+  };
+  const windowWidth = ActivateMediaQueries();
 
-  return (
-    <React.Fragment>
-      <div className="header-container">
-        <Header />
-      </div>
-      <div className="body-container">
-        <div className="form-container">
-          <Form />
-        </div>
-        
-        <div className="result-container">
-          <Result />
-        </div>
-      </div>
-      <div className="footer-container">
-        <Footer />
-      </div>
+  let renderedLayout = null;
+  if (windowWidth.isLg) {
+    renderedLayout = (
+      <React.Fragment>
+        <div className="body-container">
+          <div className="form-container">
+            <Paper className="paper-module" elevation={15}>
+              <Header title="Mobile App Review Analyzer" />
+              <Form style={{ width: "95%" }} />
+            </Paper>
+          </div>
 
-    </React.Fragment>
-  );
+          <div className="result-container">
+            <Paper className="paper-module" elevation={15}>
+              <Result />
+            </Paper>
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  }
+  if (windowWidth.isMd) {
+    renderedLayout = (
+      <React.Fragment>
+        <div className="body-container">
+          <div className="form-container">
+            <Paper className="paper-module" elevation={15}>
+              <Header title="Mobile App Review Analyzer" />
+              <Form style={{ width: "95%" }} />
+            </Paper>
+          </div>
+          <div className="result-container">
+            <Paper className="paper-module" elevation={15}>
+              <Result />
+            </Paper>
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  }
+  if (windowWidth.isSm) {
+    renderedLayout = (
+      <React.Fragment>
+        <div className="body-container">
+          <div className="form-container">
+            <Paper className="paper-module" elevation={15}>
+              <Header title="M.A.R.A" />
+              <Form style={{ width: "95%" }} />
+            </Paper>
+          </div>
+          <div className="result-container">
+            <Paper className="paper-module" elevation={15}>
+              <Result />
+            </Paper>
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  }
+
+  return renderedLayout;
 };
 
 export default Layout;

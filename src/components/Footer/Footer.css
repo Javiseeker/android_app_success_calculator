@@ -1,0 +1,36 @@
+.footer-placeholder{
+    background-color: rgb(42, 45, 207);
+    position: fixed;
+    padding: 10px 10px 0px 10px;
+    left:0;
+    bottom: 0;
+    width: 100%;
+    /* Height of the footer*/ 
+    height: 40px;
+}
+
+.footer-column-1{
+    float: left;
+    width: 50%;
+    top: 50%;
+    display: flex;
+    justify-content: center;
+}
+.footer-column-2{
+    float: right;
+    width: 50%;
+    top: 50%;
+    display: flex;
+    justify-content: center;
+
+}
+
+.footer-row:after{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.image-holder{
+    padding-right: 8px;
+}
