@@ -1,4 +1,3 @@
-import React, { ReactElement } from 'react';
 import CSS from 'csstype';
 
 interface ImageProps {

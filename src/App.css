@@ -1,3 +1,28 @@
-.App {
+html{
+  height: 100%;
+}
+body{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.main-header{
+  padding-top: 5%;
+  grid-area: header;
+}
+.main-body{
   text-align: center;
+  display: grid;
+  /* let content auto to occupy remaining height and pass value in fit-content with min-height for header and footer */
+  grid-template-rows: fit-content(8rem) auto fit-content(8rem);
+  grid-template-areas: "header" "main" "footer";
+}
+
+.main-content{
+  grid-area: main;
+}
+
+.main-footer{
+  grid-area: footer;
 }

@@ -1,7 +1,5 @@
-import React from "react";
 import Image from "../Utility/Image/Image";
 import uruitLogo from "../../assets/uruitlogo.jfif";
-import mandalorianLogo from "../../assets/mandalorianlogo.png";
 import githublogo from "../../assets/githublogo.png";
 import "./Footer.css";
 
@@ -10,7 +8,7 @@ const Footer = () => {
     <div className="footer-placeholder">
       <div className="footer-row">
         <div className="footer-column-1">
-          <a>About</a>
+          <a href="">About</a>
         </div>
         <div className="footer-column-2">
           <div className="image-holder">

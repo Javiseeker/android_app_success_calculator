@@ -1,19 +1,17 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 
-import uruit from "../../assets/uruitlogo.jfif";
-import "./Header.css";
-
-interface HeaderProps{
+interface HeaderProps {
   title: string;
 }
-const defaultProps: HeaderProps = { title:'Default Title'}
+const defaultProps: HeaderProps = { title: "Default Title" };
 
-const Header = ({title}:HeaderProps) => {
+const Header = ({ title }: HeaderProps) => {
   return (
-    <div className="container">
-      <h1>{title}</h1>
-    </div>
+    <Typography variant="h4" align="center" color="primary" gutterBottom>
+      {title}
+    </Typography>
   );
 };
 

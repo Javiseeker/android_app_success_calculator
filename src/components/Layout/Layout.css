@@ -2,18 +2,29 @@
 }
 
 .paper-module{
-  margin-top: 2%;
-  height: 295px;
-  width: 1000px;
-  border-radius:15;
-  background-color: yellow;
+  height: 100%;
+  width: 90%;
+}
+.paper-title{
+ padding-top: 2%;
+ display:flex;
+ justify-content:center;
 }
 .form-container{
   display: flex;
   justify-content: center;
 }
 
+.form-module{
+  padding-bottom: 3%;
+}
 .result-container{
+  padding-top: 8%;
   display: flex;
   justify-content: center;
+  height: 100%;
+}
+
+.analyze-button{
+  padding-top: 5%;
 }
