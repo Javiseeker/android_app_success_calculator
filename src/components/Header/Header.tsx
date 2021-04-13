@@ -1,5 +1,4 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 
 interface HeaderProps {
@@ -7,7 +6,7 @@ interface HeaderProps {
 }
 const defaultProps: HeaderProps = { title: "Default Title" };
 
-const Header = ({ title }: HeaderProps) => {
+const Header: React.FC<HeaderProps> = ({ title }: HeaderProps) => {
   return (
     <Typography variant="h4" align="center" color="primary" gutterBottom>
       {title}

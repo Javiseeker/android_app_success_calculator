@@ -1,42 +1,24 @@
-import React, { useState } from "react";
-import { Paper, TextField, Button, Icon, CircularProgress } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Paper, TextField, Button, Icon } from "@material-ui/core";
 import "./Layout.css";
+
 import Header from "../Header/Header";
-import Result from "../Result/Result";
-import ailab from "../../apis/ailab";
+import ResultSecondApp from "../Result/ResultSecondApp";
+import SearchApp from '../SearchApp';
 import useMedia from "../../hooks/useMedia";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const ailabKey: string = "5d36d5e2-9941-11eb-a55d-4e6f62601c61";
 
-const Layout: React.FC = () => {
-  const [reviewText, setReviewText] = useState("");
-  const [result, setResult] = useState("");
-  const [resultAvailable, setResultAvailable] = useState({
-    init: true,
-    loading: false,
-  });
-  const onChangeReviewText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setReviewText(e.target.value);
+const LayoutSecondApp: React.FC = () => {
+  
+  const [appName, setAppName] = useState("");
+
+  const onChangeAppName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAppName(e.target.value);
   };
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    analyzeReview(reviewText);
-  };
-  const analyzeReview = async (term: string) => {
-    setResultAvailable({ init: false, loading: true });
-    try {
-      const response = await ailab.post(
-        `text/classification/predict/${ailabKey}`,
-        { text: term }
-      );
-      setResult(response.data.result);
-      setResultAvailable({ init: false, loading: false });
-    } catch (err) {
-      console.log(
-        `Error making the Http request to AILab. Error Message: ${err.message}`
-      );
-      setResultAvailable({ init: true, loading: false });
-    }
   };
   const ActivateMediaQueries = () => {
     return {
@@ -44,26 +26,6 @@ const Layout: React.FC = () => {
       isMd: useMedia("(min-width: 641px)"),
     };
   };
-  let resultsRenderer = null;
-  if (resultAvailable.init) {
-    resultsRenderer = null;
-  } else {
-    resultsRenderer = resultAvailable.loading ? (
-      <div className="result-container">
-        <CircularProgress />
-      </div>
-    ) : (
-      <div className="result-container">
-        <Paper
-          className="paper-module"
-          elevation={15}
-          style={{ borderRadius: "15px" }}
-        >
-          <Result result={result} />
-        </Paper>
-      </div>
-    );
-  }
 
   const windowWidth = ActivateMediaQueries();
   let renderedLayout = null;
@@ -79,7 +41,7 @@ const Layout: React.FC = () => {
               style={{ borderRadius: "15px" }}
             >
               <div className="paper-title">
-                <Header title="Android App Review Analyzer" />
+                <Header title="Mobile App Analyzer" />
               </div>
 
               <form
@@ -88,17 +50,14 @@ const Layout: React.FC = () => {
                 autoComplete="off"
                 onSubmit={onFormSubmit}
               >
-                <div className="review-text">
+                <div className="app-name">
                   <TextField
-                    id="review-textfield"
-                    label="Application Review"
+                    id="app-textfield"
+                    label="Application Name"
                     variant="outlined"
-                    multiline
-                    rows={6}
-                    rowsMax={6}
-                    value={reviewText}
-                    onChange={onChangeReviewText}
-                    style={{ width: "90%" }}
+                    value={appName}
+                    onChange={onChangeAppName}
+                    style={{ width: "30%" }}
                   />
                 </div>
                 <div className="analyze-button">
@@ -107,7 +66,7 @@ const Layout: React.FC = () => {
                     variant="contained"
                     color="secondary"
                     endIcon={<Icon>poll</Icon>}
-                    disabled={/^\s*$/.test(reviewText)}
+                    disabled={/^\s*$/.test(appName)}
                   >
                     Analyze
                   </Button>
@@ -115,7 +74,7 @@ const Layout: React.FC = () => {
               </form>
             </Paper>
           </div>
-          {resultsRenderer}
+          <SearchApp q={appName} />
         </div>
       </React.Fragment>
     );
@@ -131,7 +90,7 @@ const Layout: React.FC = () => {
               style={{ borderRadius: "15px" }}
             >
               <div className="paper-title">
-                <Header title="A.A.R.A" />
+                <Header title="A.A.A" />
               </div>
 
               <form
@@ -140,17 +99,14 @@ const Layout: React.FC = () => {
                 autoComplete="off"
                 onSubmit={onFormSubmit}
               >
-                <div className="review-text">
+                <div className="app-text">
                   <TextField
-                    id="review-textfield"
-                    label="Application Review"
+                    id="app-textfield"
+                    label="Application Name"
                     variant="outlined"
-                    multiline
-                    rows={6}
-                    rowsMax={6}
-                    value={reviewText}
-                    onChange={onChangeReviewText}
-                    style={{ width: "90%" }}
+                    value={appName}
+                    onChange={onChangeAppName}
+                    style={{ width: "30%" }}
                   />
                 </div>
                 <div className="analyze-button">
@@ -159,7 +115,7 @@ const Layout: React.FC = () => {
                     variant="contained"
                     color="secondary"
                     endIcon={<Icon>poll</Icon>}
-                    disabled={/^\s*$/.test(reviewText)}
+                    disabled={/^\s*$/.test(appName)}
                   >
                     Analyze
                   </Button>
@@ -167,7 +123,7 @@ const Layout: React.FC = () => {
               </form>
             </Paper>
           </div>
-          {resultsRenderer}
+          <SearchApp q={appName} />
         </div>
       </React.Fragment>
     );
@@ -175,4 +131,4 @@ const Layout: React.FC = () => {
   return renderedLayout;
 };
 
-export default Layout;
+export default LayoutSecondApp;

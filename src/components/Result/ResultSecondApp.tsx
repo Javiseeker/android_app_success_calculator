@@ -1,12 +1,11 @@
 import React from "react";
-
 interface ResultProps {
   result: string;
 }
 
 const defaultProps: ResultProps = { result: "" };
 
-const Result: React.FC<ResultProps> = ({ result }: ResultProps) => {
+const ResultSecondApp: React.FC<ResultProps> = ({ result }: ResultProps) => {
   let style: object = {};
   if (result === "negative") {
     style = { color: "red" };
@@ -21,6 +20,6 @@ const Result: React.FC<ResultProps> = ({ result }: ResultProps) => {
     </div>
   );
 };
-Result.defaultProps = defaultProps;
+ResultSecondApp.defaultProps = defaultProps;
 
-export default Result;
+export default ResultSecondApp;

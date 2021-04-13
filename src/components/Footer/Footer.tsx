@@ -1,14 +1,15 @@
 import Image from "../Utility/Image/Image";
 import uruitLogo from "../../assets/uruitlogo.jfif";
 import githublogo from "../../assets/githublogo.png";
+import {Link} from 'react-router-dom';
 import "./Footer.css";
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
     <div className="footer-placeholder">
       <div className="footer-row">
         <div className="footer-column-1">
-          <a href="">About</a>
+          <Link to="/" style={{color: "black"}}>About</Link>
         </div>
         <div className="footer-column-2">
           <div className="image-holder">
