@@ -1,24 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Paper, TextField, Button, Icon } from "@material-ui/core";
 import "./Layout.css";
 
 import Header from "../Header/Header";
-import ResultSecondApp from "../Result/ResultSecondApp";
-import SearchApp from '../SearchApp';
+import SearchApps from "../SearchApps";
 import useMedia from "../../hooks/useMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
-
-const ailabKey: string = "5d36d5e2-9941-11eb-a55d-4e6f62601c61";
+import { useHistory } from "react-router-dom";
 
 const LayoutSecondApp: React.FC = () => {
-  
   const [appName, setAppName] = useState("");
-
+  const [canAnalyze, setCanAnalyze] = useState(false);
+  // const searchAppsRef = useRef(null);
+  const [appsList, setAppsList] = useState([]);
+  const history = useHistory();
   const onChangeAppName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAppName(e.target.value);
   };
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    history.push({
+      pathname: '/app-analysis/results',
+      state: {  // location state
+        update: true, 
+        appToAnalyze: appsList[0]
+      },
+    }); 
   };
   const ActivateMediaQueries = () => {
     return {
@@ -26,10 +32,9 @@ const LayoutSecondApp: React.FC = () => {
       isMd: useMedia("(min-width: 641px)"),
     };
   };
-
   const windowWidth = ActivateMediaQueries();
-  let renderedLayout = null;
 
+  let renderedLayout = null;
   if (windowWidth.isMd) {
     renderedLayout = (
       <React.Fragment>
@@ -60,13 +65,20 @@ const LayoutSecondApp: React.FC = () => {
                     style={{ width: "30%" }}
                   />
                 </div>
+                <div className="search-apps-container">
+                  <SearchApps
+                    q={appName}
+                    setAppsList={setAppsList}
+                    setCanAnalyze={setCanAnalyze}
+                  />
+                </div>
                 <div className="analyze-button">
                   <Button
                     type="submit"
                     variant="contained"
                     color="secondary"
                     endIcon={<Icon>poll</Icon>}
-                    disabled={/^\s*$/.test(appName)}
+                    disabled={!canAnalyze}
                   >
                     Analyze
                   </Button>
@@ -74,7 +86,6 @@ const LayoutSecondApp: React.FC = () => {
               </form>
             </Paper>
           </div>
-          <SearchApp q={appName} />
         </div>
       </React.Fragment>
     );
@@ -99,7 +110,7 @@ const LayoutSecondApp: React.FC = () => {
                 autoComplete="off"
                 onSubmit={onFormSubmit}
               >
-                <div className="app-text">
+                <div className="app-name">
                   <TextField
                     id="app-textfield"
                     label="Application Name"
@@ -109,13 +120,20 @@ const LayoutSecondApp: React.FC = () => {
                     style={{ width: "30%" }}
                   />
                 </div>
+                <div className="search-apps-container">
+                  <SearchApps
+                    q={appName}
+                    setAppsList={setAppsList}
+                    setCanAnalyze={setCanAnalyze}
+                  />
+                </div>
                 <div className="analyze-button">
                   <Button
                     type="submit"
                     variant="contained"
                     color="secondary"
                     endIcon={<Icon>poll</Icon>}
-                    disabled={/^\s*$/.test(appName)}
+                    disabled={!canAnalyze}
                   >
                     Analyze
                   </Button>
@@ -123,7 +141,6 @@ const LayoutSecondApp: React.FC = () => {
               </form>
             </Paper>
           </div>
-          <SearchApp q={appName} />
         </div>
       </React.Fragment>
     );

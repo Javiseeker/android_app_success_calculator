@@ -22,12 +22,12 @@ const Layout: React.FC = () => {
     e.preventDefault();
     analyzeReview(reviewText);
   };
-  const analyzeReview = async (term: string) => {
+  const analyzeReview = async (reviewText: string) => {
     setResultAvailable({ init: false, loading: true });
     try {
       const response = await ailab.post(
         `text/classification/predict/${ailabKey}`,
-        { text: term }
+        { text: reviewText }
       );
       setResult(response.data.result);
       setResultAvailable({ init: false, loading: false });

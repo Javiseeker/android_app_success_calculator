@@ -1,11 +1,11 @@
 import CSS from 'csstype';
 
 interface ImageProps {
-    imgSrc: string;
-    altPath: string;
-    onClickUrl: string;
-    style: CSS.Properties;
-    onClickEnabled: boolean;
+    readonly imgSrc: string;
+    readonly altPath: string;
+    readonly onClickUrl: string;
+    readonly style: CSS.Properties;
+    readonly onClickEnabled: boolean;
 }
 
 const Image : React.FC<ImageProps> = ({imgSrc, altPath, onClickUrl, style, onClickEnabled }: ImageProps) => {

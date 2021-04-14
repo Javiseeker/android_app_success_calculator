@@ -9,6 +9,7 @@ import Layout from "./components/Layout/Layout";
 import LayoutSecondApp from "./components/Layout/LayoutSecondApp";
 import NotFound from "./components/NotFound/NotFound";
 import Footer from "./components/Footer/Footer";
+import ResultSecondApp from "./components/Result/ResultSecondApp";
 
 const theme = createMuiTheme({
   palette: {
@@ -33,18 +34,11 @@ const App: React.FC = () => {
         </header>
         <main className="main-content">
           <Switch>
-            <Route exact path="/">
-              <About />
-            </Route>
-            <Route path="/review-analysis">
-              <Layout />
-            </Route>
-            <Route path="/app-analysis">
-              <LayoutSecondApp />
-            </Route>
-            <Route path="/**">
-              <NotFound />
-            </Route>
+            <Route exact path="/" component={About} />
+            <Route path="/review-analysis" component={Layout} />
+            <Route exact path="/app-analysis" component={LayoutSecondApp} />
+            <Route path="/app-analysis/results" component={ResultSecondApp}/>
+            <Route path="/**" component={NotFound} />
           </Switch>
         </main>
         <footer className="main-footer">
