@@ -1,28 +1,27 @@
 import { Typography } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, SetStateAction } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import rapidapi from "../../apis/appstore_rapidapi";
 import ailab from "../../apis/ailab";
+import { setOriginalNode } from "typescript";
 
 interface HistoryProps extends stateToMyProps {
   location: {
-    [key:string]: stateToMyProps
+    [key: string]: stateToMyProps;
   };
   history: RouteComponentProps["history"];
   match: RouteComponentProps["match"];
 }
-
-interface stateToMyProps extends MyProps{
+interface stateToMyProps extends MyProps {
   state: {
-    [key: string]: MyProps
-  }
+    [key: string]: MyProps;
+  };
 }
 interface MyProps extends appToAnalyzeItem {
   appToAnalyze: {
-    [key: string]: appToAnalyzeItem
-  }
+    [key: string]: appToAnalyzeItem;
+  };
 }
-
 interface appToAnalyzeItem {
   name: string;
   id: string;
@@ -30,17 +29,30 @@ interface appToAnalyzeItem {
   rating: number;
   image: string;
 }
+type review = {
+  body: string;
+  date: string;
+};
+type ailabResult = {
+  result: string;
+  confidence_score: number;
+  processing_time: number;
+};
+interface ailabInterface {
+  result: string;
+  confidence_score: number;
+  processing_time: number;
+}
 
 const ailabKey: string = "5d36d5e2-9941-11eb-a55d-4e6f62601c61";
-const ResultSecondApp: React.FC<HistoryProps> = ({location}: HistoryProps) => {
+
+const ResultSecondApp: React.FC<HistoryProps> = ({
+  location,
+}: HistoryProps) => {
   const [appReviews, setAppReviews] = useState([]);
+  const [appRating, setAppRating] = useState(0);
   useEffect(() => {
     if (location.state !== undefined) {
-      // console.log(location.state.appToAnalyze.name);
-      // console.log(location.state.appToAnalyze.id);
-      // console.log(location.state.appToAnalyze.price);
-      // console.log(location.state.appToAnalyze.rating);
-
       const obtainAppReviews = async () => {
         try {
           const { data } = await rapidapi.get("applicationReviews", {
@@ -48,8 +60,6 @@ const ResultSecondApp: React.FC<HistoryProps> = ({location}: HistoryProps) => {
               id: location.state.appToAnalyze.id,
             },
           });
-          console.log('datos:')
-          console.log(data);
           setAppReviews(data);
         } catch (err) {
           console.log(
@@ -61,59 +71,84 @@ const ResultSecondApp: React.FC<HistoryProps> = ({location}: HistoryProps) => {
       obtainAppReviews();
     }
   }, []);
-  let dateReviewsMade = [''];
-  let analyzedAppReviews = [{}];
-  let errorReviews = [''];
+
   const analyzeReviewBatch = (reviews: any) => {
-    reviews.forEach((review: { body: string, date: string; })=>{
-      analyzeReview(review.body);
-      dateReviewsMade.push(review.date);
-    })
-  };
-  const analyzeReview = async (reviewText: string) => {
-    try {
-      const {data} = await ailab.post(
-        `text/classification/predict/${ailabKey}`,
-        { text: reviewText }
-      );
-      analyzedAppReviews.push(data);
-    } catch (err) {
-      console.log(
-        `Error making the Http request to AILab. Error Message: ${err.message}`
-      );
-      errorReviews.push(reviewText);
-    }
-  };
+    let requestsArray = reviews.map((review: { body: string }) => {
+      const request = ailab.post(`text/classification/predict/${ailabKey}`, {
+        text: review.body,
+      });
 
-  let positiveCounter: number = 0;
-  let negativeCounter: number = 0;
-  let neutralCounter: number = 0;
-
-  const calculateReviewBasedRating = (analyzedReviews: any) => {
-    analyzedReviews.forEach((analyzedReview: {confidence_score: number, result: string}) => {
-      //pensar en una formula para calcular rating! :P      
-      // analyzedReview.confidence_score
-      // analyzedReview.result
-
+      return request;
     });
+    Promise.all(requestsArray).then((values) => {
+      // console.log(values)
+      let tmpList = values.map((value: any) => {
+        return value.data;
+      });
+      //  setAnalyzedAppReviews(
+      // )
+      setAppRating(calculateReviewBasedRating(
+        tmpList,
+        tmpList.length
+      )
+      );
+      
+    });
+    // numberOfReviews = reviews.length;
   };
+  // const analyzeReview = async (reviewText: string) => {
+  //   try {
+  //     const { data } = await ailab.post(
+  //       `text/classification/predict/${ailabKey}`,
+  //       {
+  //         text: reviewText,
+  //       }
+  //     );
+  //     let aiLabObj = {} as ailabInterface;
+  //     aiLabObj.result = data.result;
+  //     aiLabObj.confidence_score = data.confidence_score;
+  //     aiLabObj.processing_time = data.processing_time;
+  //     analyzedAppReviews.push(aiLabObj);
+  //   } catch (err) {
+  //     console.log(
+  //       `Error making the Http request to AILab. Error Message: ${err.message}`
+  //     );
+  //     errorReviews.push(reviewText);
+  //   }
+  // };
+
+  const calculateReviewBasedRating = (
+    analyzedReviews: ailabInterface[],
+    reviewsNumber: number
+  ): number => {
+    let counter: number = 0;
+    analyzedReviews.forEach((analyzedReview: ailabResult) => {
+      switch (analyzedReview.result) {
+        case "positive":
+          counter += 1;
+          break;
+        case "negative":
+          counter -= 1;
+          break;
+      }
+    });
+
+    return counter / reviewsNumber;
+  };
+
   if (location.state === undefined)
     return (
       <Typography variant="h1" color="primary">
         Bad Gateway
       </Typography>
     );
-  
+  console.log(appRating)  
   analyzeReviewBatch(appReviews);
-  console.log('REVIEWS ANALIZADAS:');
-  console.log(analyzedAppReviews);
-  console.log('FECHAS DE REVIEWS');
-  console.log(dateReviewsMade);
-  console.log('REVIEWS CON ERRORES');
-  console.log(errorReviews);
-
-  calculateReviewBasedRating(analyzedAppReviews);
-  return <div>I got here guys, i made it.</div>;
+  return (
+    <div className="results">
+      <Typography variant="h2">{`Review-based rating for ${location.state.appToAnalyze.name}: Review-Based: ${appRating} vs Rating-Based: ${location.state.appToAnalyze.rating}`}</Typography>
+    </div>
+  );
 };
 
 export default ResultSecondApp;

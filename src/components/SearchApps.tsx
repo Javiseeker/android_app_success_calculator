@@ -18,7 +18,7 @@ const SearchApps: React.FC<Props> = ({ q, setCanAnalyze, setAppsList }) => {
     if (q !== "") {
       const timerId = setTimeout(() => {
         setDebouncedAppName(q);
-      }, 3000);
+      }, 1500);
       return () => {
         clearTimeout(timerId);
       };
