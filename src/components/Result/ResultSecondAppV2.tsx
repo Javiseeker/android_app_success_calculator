@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import Stepper from '../Utility/Stepper/ResultStepper';
+import Stepper from "../Utility/Stepper/ResultStepper";
 import React, { useState, useEffect } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import rapidapi from "../../apis/appstore_rapidapi";
@@ -43,16 +43,14 @@ interface ailabInterface {
 
 const ailabKey: string = "5d36d5e2-9941-11eb-a55d-4e6f62601c61";
 
-
-const ResultSecondApp: React.FC<HistoryProps> = ({
+const ResultSecondAppV2: React.FC<HistoryProps> = ({
   location,
 }: HistoryProps) => {
   const [appReviews, setAppReviews] = useState([]);
   const [appRating, setAppRating] = useState(0);
-  const [stepper, setStepper] = useState(0);
+  const [stepperValue, setStepperValue] = useState(0);
 
   useEffect(() => {
-    
     if (location.state !== undefined) {
       const obtainAppReviews = async () => {
         try {
@@ -62,6 +60,7 @@ const ResultSecondApp: React.FC<HistoryProps> = ({
             },
           });
           setAppReviews(data);
+          setStepperValue(1);
         } catch (err) {
           console.log(
             `Error making the Http request to RapidAPI. Error Message: ${err.message}`
@@ -74,7 +73,6 @@ const ResultSecondApp: React.FC<HistoryProps> = ({
   }, []);
 
   const analyzeReviewBatch = (reviews: any) => {
-    // setStepper(1)
     let requestsArray = reviews.map((review: { body: string }) => {
       const request = ailab.post(`text/classification/predict/${ailabKey}`, {
         text: review.body,
@@ -82,11 +80,12 @@ const ResultSecondApp: React.FC<HistoryProps> = ({
 
       return request;
     });
+
     Promise.all(requestsArray).then((values) => {
       let tmpList = values.map((value: any) => {
         return value.data;
       });
-      
+
       setAppRating(calculateReviewBasedRating(tmpList, tmpList.length));
     });
   };
@@ -95,7 +94,7 @@ const ResultSecondApp: React.FC<HistoryProps> = ({
     analyzedReviews: ailabInterface[],
     reviewsNumber: number
   ): number => {
-    // setStepper(2);
+    setStepperValue(2);
     let counter: number = 0;
     analyzedReviews.forEach((analyzedReview: ailabResult) => {
       switch (analyzedReview.result) {
@@ -115,7 +114,7 @@ const ResultSecondApp: React.FC<HistoryProps> = ({
       rating = rating * -1;
       rating = rating * 2.5 + 1;
     }
-    
+    setStepperValue(3)
     return rating;
   };
   if (location.state === undefined)
@@ -124,15 +123,43 @@ const ResultSecondApp: React.FC<HistoryProps> = ({
         Bad Gateway
       </Typography>
     );
-  analyzeReviewBatch(appReviews);
+
+  let renderedStepper = null;
+  if (appReviews.length === 0) {
+    renderedStepper = (
+      <div className="stepper-container">
+        <ResultStepper step={0} />
+      </div>
+    );
+  } else{
+    if(stepperValue === 1){
+      renderedStepper = (
+        <div className="stepper-container">
+          <ResultStepper step={stepperValue} />
+        </div>
+      );
+      analyzeReviewBatch(appReviews);
+    } else if (stepperValue === 2){
+      renderedStepper = (
+        <div className="stepper-container">
+          <ResultStepper step={stepperValue} />
+        </div>
+      );
+    } else if(stepperValue === 3){
+      renderedStepper = (
+        <div className="stepper-container">
+          <ResultStepper step={stepperValue} />
+        </div>
+      ); 
+    }
+  }
 
   return (
     <div className="results-container">
-      
       <Typography variant="h2">{`Review-based rating for ${location.state.appToAnalyze.name}: Review-Based: ${appRating} vs Rating-Based: ${location.state.appToAnalyze.rating}`}</Typography>
-      <ResultStepper step={stepper}/>
+      {renderedStepper}
     </div>
   );
 };
 
-export default ResultSecondApp;
+export default ResultSecondAppV2;
