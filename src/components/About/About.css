@@ -1,0 +1,9 @@
+.paper-module{
+  height: 100%;
+  width: 90%;
+}
+
+.accordion-container{
+  overflow-y: auto;
+  max-height: 700px;
+}

@@ -1,11 +1,11 @@
-import { Typography } from "@material-ui/core";
-import Stepper from "../Utility/Stepper/ResultStepper";
-import React, { useState, useEffect } from "react";
+import { Typography, Button, Icon, CircularProgress } from "@material-ui/core";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import rapidapi from "../../apis/appstore_rapidapi";
 import ailab from "../../apis/ailab";
 import "./ResultSecondApp.css";
 import ResultStepper from "../Utility/Stepper/ResultStepper";
+
 interface HistoryProps extends stateToMyProps {
   location: {
     [key: string]: stateToMyProps;
@@ -48,7 +48,17 @@ const ResultSecondAppV2: React.FC<HistoryProps> = ({
 }: HistoryProps) => {
   const [appReviews, setAppReviews] = useState([]);
   const [appRating, setAppRating] = useState(0);
-  const [stepperValue, setStepperValue] = useState(0);
+  const [stepValue, setStepValue] = useState(0);
+  const [showResults, setShowResults] = useState(false);
+  const [appReviewsAnalyses, setAppReviewsAnalyses] = useState<any>([]);
+  const [appReviewsAnalysesLength, setAppReviewsAnalysesLength] = useState(0);
+  const [barScore, setBarScore] = useState(0);
+
+  // useLayoutEffect(
+  //   () => {
+  //     console.log(appReviewsAnalyses)
+  //   }, [appReviewsAnalyses]
+  // );
 
   useEffect(() => {
     if (location.state !== undefined) {
@@ -60,7 +70,7 @@ const ResultSecondAppV2: React.FC<HistoryProps> = ({
             },
           });
           setAppReviews(data);
-          setStepperValue(1);
+          setStepValue(1);
         } catch (err) {
           console.log(
             `Error making the Http request to RapidAPI. Error Message: ${err.message}`
@@ -72,6 +82,29 @@ const ResultSecondAppV2: React.FC<HistoryProps> = ({
     }
   }, []);
 
+  useEffect(
+    //App Reviews analyzed. Starting analyzing one by one to render on the ResultStepper component.
+    () => {
+      console.log(appReviewsAnalyses)
+
+      if (appReviewsAnalyses.length > 0) {
+        console.log('appReviewsAnalyses:')
+        console.log(appReviewsAnalyses)
+        let tmpArray = appReviewsAnalyses;
+        let shiftedValue = tmpArray.shift();
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        setAppReviewsAnalyses(tmpArray);
+        if (shiftedValue.result === "positive") {
+          setBarScore(barScore + 1);
+        } else if (shiftedValue.result === "negative") {
+          setBarScore(barScore - 1)
+        }
+        
+        if (appReviewsAnalyses.length === 0) setStepValue(2);
+      }
+    }, [appReviewsAnalyses]
+  );
+
   const analyzeReviewBatch = (reviews: any) => {
     let requestsArray = reviews.map((review: { body: string }) => {
       const request = ailab.post(`text/classification/predict/${ailabKey}`, {
@@ -82,41 +115,31 @@ const ResultSecondAppV2: React.FC<HistoryProps> = ({
     });
 
     Promise.all(requestsArray).then((values) => {
-      let tmpList = values.map((value: any) => {
+      setAppReviewsAnalysesLength(values.length);
+      setAppReviewsAnalyses(values.map((value: any) => {
         return value.data;
-      });
-
-      setAppRating(calculateReviewBasedRating(tmpList, tmpList.length));
+      }));
     });
   };
 
-  const calculateReviewBasedRating = (
-    analyzedReviews: ailabInterface[],
-    reviewsNumber: number
-  ): number => {
-    setStepperValue(2);
-    let counter: number = 0;
-    analyzedReviews.forEach((analyzedReview: ailabResult) => {
-      switch (analyzedReview.result) {
-        case "positive":
-          counter += 1;
-          break;
-        case "negative":
-          counter -= 1;
-          break;
-      }
-    });
+  const calculateReviewBasedRating = () => {
 
-    let rating = counter / reviewsNumber;
+    let rating = barScore / appReviewsAnalysesLength;
     if (rating > 0) {
       rating = rating * 2.5 + 2.5;
     } else {
       rating = rating * -1;
       rating = rating * 2.5 + 1;
     }
-    setStepperValue(3)
-    return rating;
+    setStepValue(3);
+    setAppRating(rating);
   };
+
+  // console.log(`app review analyses length: ${appReviewsAnalysesLength}`)
+  // console.log(`app review analyses: ${appReviewsAnalyses}`)
+  // console.log(`current barscore: ${currentBarScore}`);
+  // console.log(`analyzed reviews length: ${appReviewsAnalysesLength}`);
+
   if (location.state === undefined)
     return (
       <Typography variant="h1" color="primary">
@@ -124,40 +147,62 @@ const ResultSecondAppV2: React.FC<HistoryProps> = ({
       </Typography>
     );
 
+  // if (appReviewsAnalyses.length > 0) {
+  //   let tmpList = appReviewsAnalyses;
+  //   tmpList.shift()
+  //   setAppReviewsAnalyses(tmpList);
+  // }
+
+  //App Reviews obtained. Moving logic along with the current stepper's step value.
+  switch (stepValue) {
+    case 1:
+      if (appReviewsAnalyses.length === 0) {
+        //App Reviews have not been analyzed yet.
+        analyzeReviewBatch(appReviews);
+      }
+      break;
+
+    case 2:
+
+      calculateReviewBasedRating();
+      break;
+    case 3:
+      setTimeout(() => {
+        setStepValue(-1);
+        setShowResults(true);
+      }, 2000)
+  }
+
+
+  let renderedResults = null;
   let renderedStepper = null;
-  if (appReviews.length === 0) {
+  if (showResults) {
+    renderedResults = (
+      <div>
+        <Typography variant="h2">{`Review-based rating for ${location.state.appToAnalyze.name}: Review-Based: ${appRating} vs Rating-Based: ${location.state.appToAnalyze.rating}`}</Typography>
+        <Button
+          variant="contained"
+          color="secondary"
+          endIcon={<Icon>poll</Icon>}
+        >
+          Analyze Another App
+        </Button>
+      </div>
+
+    );
+  } else {
     renderedStepper = (
       <div className="stepper-container">
-        <ResultStepper step={0} />
+        <ResultStepper step={stepValue} reviewAnalysisResult={barScore} />
       </div>
     );
-  } else{
-    if(stepperValue === 1){
-      renderedStepper = (
-        <div className="stepper-container">
-          <ResultStepper step={stepperValue} />
-        </div>
-      );
-      analyzeReviewBatch(appReviews);
-    } else if (stepperValue === 2){
-      renderedStepper = (
-        <div className="stepper-container">
-          <ResultStepper step={stepperValue} />
-        </div>
-      );
-    } else if(stepperValue === 3){
-      renderedStepper = (
-        <div className="stepper-container">
-          <ResultStepper step={stepperValue} />
-        </div>
-      ); 
-    }
   }
 
   return (
     <div className="results-container">
-      <Typography variant="h2">{`Review-based rating for ${location.state.appToAnalyze.name}: Review-Based: ${appRating} vs Rating-Based: ${location.state.appToAnalyze.rating}`}</Typography>
+      {renderedResults}
       {renderedStepper}
+
     </div>
   );
 };

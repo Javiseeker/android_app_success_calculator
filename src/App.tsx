@@ -9,16 +9,16 @@ import Layout from "./components/Layout/Layout";
 import LayoutSecondApp from "./components/Layout/LayoutSecondApp";
 import NotFound from "./components/NotFound/NotFound";
 import Footer from "./components/Footer/Footer";
-import ResultSecondApp from "./components/Result/ResultSecondApp";
-import ResultSecondAppV2 from "./components/Result/ResultSecondAppV2";
-
+// import ResultSecondApp from "./components/Result/ResultSecondApp";
+// import ResultSecondAppV2 from "./components/Result/ResultSecondAppV2";
+import ResultSecondAppV3 from "./components/Result/ResultSecondAppV3";
 const theme = createMuiTheme({
   palette: {
     primary: {
       main: "#00acc1",
     },
     secondary: {
-      main: "#ffe0b2",
+      main: "#ff6f00",
     },
   },
 });
@@ -39,7 +39,8 @@ const App: React.FC = () => {
             <Route path="/review-analysis" component={Layout} />
             <Route exact path="/app-analysis" component={LayoutSecondApp} />
             {/* <Route path="/app-analysis/results" component={ResultSecondApp}/> */}
-            <Route path="/app-analysis/results" component={ResultSecondAppV2}/>
+            {/* <Route path="/app-analysis/results" component={ResultSecondAppV2}/> */}
+            <Route path="/app-analysis/results" component={ResultSecondAppV3}/>
             <Route path="/**" component={NotFound} />
           </Switch>
         </main>

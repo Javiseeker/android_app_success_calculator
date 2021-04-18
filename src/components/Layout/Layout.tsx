@@ -79,7 +79,7 @@ const Layout: React.FC = () => {
               style={{ borderRadius: "15px" }}
             >
               <div className="paper-title">
-                <Header title="Android App Review Analyzer" />
+                <Header title="App Review Analyzer" />
               </div>
 
               <form
@@ -131,7 +131,7 @@ const Layout: React.FC = () => {
               style={{ borderRadius: "15px" }}
             >
               <div className="paper-title">
-                <Header title="A.A.R.A" />
+                <Header title="A.R.A" />
               </div>
 
               <form

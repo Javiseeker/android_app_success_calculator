@@ -130,7 +130,7 @@ const ResultSecondApp: React.FC<HistoryProps> = ({
     <div className="results-container">
       
       <Typography variant="h2">{`Review-based rating for ${location.state.appToAnalyze.name}: Review-Based: ${appRating} vs Rating-Based: ${location.state.appToAnalyze.rating}`}</Typography>
-      <ResultStepper step={stepper}/>
+      {/* <ResultStepper step={stepper}/> */}
     </div>
   );
 };

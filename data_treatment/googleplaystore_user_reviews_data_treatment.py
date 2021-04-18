@@ -64,4 +64,4 @@ df.rename(columns={'Translated_Review':'Text'}, inplace=True)
 # Where the new csv is being persisted
 df.to_csv(r"C:\Users\Javier Alonso\Desktop\Work\HackatonIA_2021\data_treatment\processed_csv\googleplaystore_user_reviews_v3.csv", index=False)
 
-print('TERMINE BB')
+print('Finished')

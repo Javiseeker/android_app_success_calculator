@@ -14,19 +14,21 @@
 
 .footer-column-1{
     float: left;
-    width: 50%;
+    width: 33%;
     padding-top: 5px;
-    display: flex;
-    justify-content: center;
     
 }
 .footer-column-2{
+    float: left;
+    width: 33%;
+    padding-top: 5px;
+}
+
+.footer-column-3{
     float: right;
-    width: 50%;
-    top: 50%;
+    width: 33%;
     display: flex;
     justify-content: center;
-
 }
 
 .footer-row:after{
@@ -36,5 +38,5 @@
 }
 
 .image-holder{
-    padding-right: 8px;
+    padding-right: 6px;
 }

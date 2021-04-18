@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Paper, TextField, Button, Icon } from "@material-ui/core";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import "./Layout.css";
 
 import Header from "../Header/Header";
@@ -12,6 +13,7 @@ const LayoutSecondApp: React.FC = () => {
   const [canAnalyze, setCanAnalyze] = useState(false);
   // const searchAppsRef = useRef(null);
   const [appsList, setAppsList] = useState([]);
+  const [chosenApp, setChosenApp] = useState<any>({})
   const history = useHistory();
   const onChangeAppName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAppName(e.target.value);
@@ -21,10 +23,10 @@ const LayoutSecondApp: React.FC = () => {
     history.push({
       pathname: '/app-analysis/results',
       state: {  // location state
-        update: true, 
-        appToAnalyze: appsList[0]
+        update: true,
+        appToAnalyze: chosenApp
       },
-    }); 
+    });
   };
   const ActivateMediaQueries = () => {
     return {
@@ -46,7 +48,7 @@ const LayoutSecondApp: React.FC = () => {
               style={{ borderRadius: "15px" }}
             >
               <div className="paper-title">
-                <Header title="Mobile App Analyzer" />
+                <Header title="App Analyzer" />
               </div>
 
               <form
@@ -56,22 +58,31 @@ const LayoutSecondApp: React.FC = () => {
                 onSubmit={onFormSubmit}
               >
                 <div className="app-name">
-                  <TextField
-                    id="app-textfield"
-                    label="Application Name"
-                    variant="outlined"
-                    value={appName}
-                    onChange={onChangeAppName}
+                  <Autocomplete
+                    onChange={(event, value) => { setChosenApp(value) }}
+                    id="combo-box-demo"
+                    options={appsList}
+                    getOptionLabel={(option: any) => option.name}
                     style={{ width: "30%" }}
+                    renderInput={(params) =>
+                      <TextField
+                        {...params}
+                        id="app-textfield"
+                        label="Application Name"
+                        variant="outlined"
+                        value={appName}
+                        onChange={onChangeAppName}
+                      />}
                   />
+                  <div className="search-apps-container">
+                    <SearchApps
+                      q={appName}
+                      setAppsList={setAppsList}
+                      setCanAnalyze={setCanAnalyze}
+                    />
+                  </div>
                 </div>
-                <div className="search-apps-container">
-                  <SearchApps
-                    q={appName}
-                    setAppsList={setAppsList}
-                    setCanAnalyze={setCanAnalyze}
-                  />
-                </div>
+
                 <div className="analyze-button">
                   <Button
                     type="submit"
@@ -101,7 +112,7 @@ const LayoutSecondApp: React.FC = () => {
               style={{ borderRadius: "15px" }}
             >
               <div className="paper-title">
-                <Header title="A.A.A" />
+                <Header title="A.A" />
               </div>
 
               <form
@@ -111,22 +122,31 @@ const LayoutSecondApp: React.FC = () => {
                 onSubmit={onFormSubmit}
               >
                 <div className="app-name">
-                  <TextField
-                    id="app-textfield"
-                    label="Application Name"
-                    variant="outlined"
-                    value={appName}
-                    onChange={onChangeAppName}
+                  <Autocomplete
+                    onChange={(event, value) => { setChosenApp(value) }}
+                    id="combo-box-demo"
+                    options={appsList}
+                    getOptionLabel={(option: any) => option.name}
                     style={{ width: "30%" }}
+                    renderInput={(params) =>
+                      <TextField
+                        {...params}
+                        id="app-textfield"
+                        label="Application Name"
+                        variant="outlined"
+                        value={appName}
+                        onChange={onChangeAppName}
+                      />}
                   />
+                  <div className="search-apps-container">
+                    <SearchApps
+                      q={appName}
+                      setAppsList={setAppsList}
+                      setCanAnalyze={setCanAnalyze}
+                    />
+                  </div>
                 </div>
-                <div className="search-apps-container">
-                  <SearchApps
-                    q={appName}
-                    setAppsList={setAppsList}
-                    setCanAnalyze={setCanAnalyze}
-                  />
-                </div>
+
                 <div className="analyze-button">
                   <Button
                     type="submit"

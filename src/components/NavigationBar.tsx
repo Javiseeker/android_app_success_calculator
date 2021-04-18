@@ -81,7 +81,7 @@ const NavigationBar: React.FC = (props: any) => {
               key="review-analysis"
             >
               <MenuItem selected={activeRoute("/review-analysis")}>
-                <ListItemText primary={<Typography color="primary">Android App Review Analyzer</Typography>} />
+                <ListItemText primary={<Typography color="primary">App Review Analyzer</Typography>} />
               </MenuItem>
             </NavLink>
             <NavLink
@@ -90,7 +90,7 @@ const NavigationBar: React.FC = (props: any) => {
               key="app-analysis"
             >
               <MenuItem selected={activeRoute("/app-analysis")} style={{color: "primary"}}>
-                <ListItemText primary={<Typography color="primary">Android App Analyzer</Typography>} />
+                <ListItemText primary={<Typography color="primary">App Analyzer</Typography>} />
               </MenuItem>
             </NavLink>
           </MenuList>
