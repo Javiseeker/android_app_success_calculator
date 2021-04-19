@@ -114,7 +114,6 @@ const ResultStepper: React.FC<Props> = ({ step, reviewAnalysisResult }: Props) =
   useEffect(() => {
     setActiveStep(step);
   }, [step]);
-  console.log(reviewAnalysisResult);
   return (
     <React.Fragment>
       <div className="information-container">

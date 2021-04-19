@@ -55,7 +55,6 @@ class ResultSecondAppV3 extends React.Component<HistoryProps> {
 
   componentDidMount() {
     if (this.props.location.state !== undefined) {
-      console.log(this.props.location.state);
       const obtainAppReviews = async () => {
         try {
           const { data } = await rapidapi.get("applicationReviews", {
@@ -63,7 +62,6 @@ class ResultSecondAppV3 extends React.Component<HistoryProps> {
               id: this.props.location.state.appToAnalyze.id,
             },
           });
-          console.log(data)
           this.setState({ appReviews: data }, () => {
             this.setState({ stepValue: 1 });
           });
