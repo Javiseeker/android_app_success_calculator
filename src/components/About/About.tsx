@@ -67,10 +67,9 @@ const About: React.FC = () => {
                   </AccordionSummary>
                   <AccordionDetails>
                     <Typography style={{ textAlign: "left" }}>
-                      Nowadays, there is no fast way to contrast a Mobile Application's total rating with its latest reviews.
+                    Nowadays, there is no fast way to contrast a Mobile Application's total rating with its latest reviews.
                     This is where <b>The Mandalorians</b> play their role! <br />
-                    The Application Success Estimation uses a machine learning model to process data related to mobile applications’
-                    ratings and user reviews to generate conclusions that can be used by app developers and business analysts to get
+                    The Application Success Estimation uses a machine learning model to process user reviews and generate conclusions that can be used by app developers and business analysts to get
                     a quick understanding of the users’ response to the App’s most recent updates. It consists of two different Apps:
                     <br /> <br />
                     <b>App Review Analyzer:</b> A basic App to test the machine learning model that analyzes a user review to find out whether it’s positive, negative or neutral.
@@ -150,8 +149,7 @@ const About: React.FC = () => {
                     <Typography style={{ textAlign: "left" }}>
                       Nowadays, there is no fast way to contrast a Mobile Application's total rating with its latest reviews.
                     This is where <b>The Mandalorians</b> play their role! <br />
-                    The Application Success Estimation uses a machine learning model to process data related to mobile applications’
-                    ratings and user reviews to generate conclusions that can be used by app developers and business analysts to get
+                    The Application Success Estimation uses a machine learning model to process user reviews and generate conclusions that can be used by app developers and business analysts to get
                     a quick understanding of the users’ response to the App’s most recent updates. It consists of two different Apps:
                     <br /> <br />
                     <b>App Review Analyzer:</b> A basic App to test the machine learning model that analyzes a user review to find out whether it’s positive, negative or neutral.

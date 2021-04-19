@@ -10,11 +10,11 @@ const Rating: React.FC<Props> = ({ appRating, reviewBasedRating }: Props) => {
   const analyzeRating = (rating: number) => {
     let tmpStyle: object = {};
     if (rating < 2.5) {
-      tmpStyle = { color: "red" };
+      tmpStyle = { color: "red", fontSize:'200%' };
     } else if (rating >= 2.5 && rating < 3.8) {
-      tmpStyle = { color: "#00acc1" };
+      tmpStyle = { color: "#00acc1", fontSize:'200%' };
     } else if (rating >= 3.8) {
-      tmpStyle = { color: "green" };
+      tmpStyle = { color: "green", fontSize:'200%' };
     }
     return tmpStyle;
   }

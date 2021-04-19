@@ -7,6 +7,7 @@ import ResultStepper from "../Utility/Stepper/ResultStepper";
 import Header from '../Header/Header';
 import Image from '../Utility/Image/Image';
 import Rating from '../Rating/Rating';
+import moment from 'moment';
 
 import './ResultSecondApp.css';
 interface HistoryProps extends stateToMyProps {
@@ -111,9 +112,9 @@ class ResultSecondAppV3 extends React.Component<HistoryProps> {
   analyzeReviewBatch = (reviews: any) => {
     let tmpInitialReviewDate: string = ''
     let tmpLatestReviewDate: string = ''
-    let requestsArray = reviews.map((review: { body: string, date: string }, index: number) => {
-      if (index === 0) tmpLatestReviewDate = review.date;
-      if (index === reviews.length - 1) tmpInitialReviewDate = review.date;
+    let requestsArray = reviews.map((review: { body: string, dateIso: string }, index: number) => {
+      if (index === 0) tmpLatestReviewDate = review.dateIso;
+      if (index === reviews.length - 1) tmpInitialReviewDate = review.dateIso;
 
       const request = ailab.post(`text/classification/predict/${ailabKey}`, {
         text: review.body,
@@ -219,8 +220,9 @@ class ResultSecondAppV3 extends React.Component<HistoryProps> {
               <Header title={this.props.location.state.appToAnalyze.name.toString()} />
             </div>
             <div className="dates-container">
-              <p>{`Reviews initial date: ${this.state.initialReviewDate}`}</p>
-              <p>{`Reviews latest date: ${this.state.latestReviewDate}`}</p>
+              <p>{`Analyzed Reviews: ${this.state.appReviewsAnalysesLength}`}</p>
+              <p>{`Initial Date: ${moment(this.state.initialReviewDate, 'DD-MM-YYYY-DDTHH:mm:ss').toDate}`}</p>
+              <p>{`Latest Date: ${this.state.latestReviewDate}`}</p>
             </div>
             <div className="rating-container">
               <Rating appRating={Number(this.props.location.state.appToAnalyze.rating)} reviewBasedRating={this.state.appRating} />
