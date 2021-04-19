@@ -88,9 +88,7 @@ const About: React.FC = () => {
                   </AccordionSummary>
                   <AccordionDetails>
                     <Typography style={{ textAlign: "left" }}>
-                      One of the most important keys for a mobile application to be successful is to have a good overall rating in their
-                      respective stores. Both the Apple Store or Google Play Store have complex search algorithms to sort search results
-                      for users, and of course, <b>rating</b> and <b>user reviews</b> are part of them. Therefore, it is in the best interest of any owner of a mobile application to be aware of the users' feedback to the app's most recent updates.
+                      One of the most important keys for a mobile application to be successful is to have a good overall rating in their respective stores. Both the Apple Store or Google Play Store have complex search algorithms to sort results for users, and of course, <b>rating</b> and <b>user reviews</b> are part of them. Therefore, it is in the best interest of any owner of a mobile application to be aware of the users' feedback to the app's most recent updates.
                       <br /> <br />
                       A good example of the importance of this analysis is Instagram, whose release in March 2015 had a lot of issues, causing 11%
                       its users to give 1-star ratings and comment about bugs. Instagram addressed these issues and fixed them by May and it's rating skyrocketed.
@@ -169,8 +167,7 @@ const About: React.FC = () => {
                   <AccordionDetails>
                     <Typography style={{ textAlign: "left" }}>
                       One of the most important keys for a mobile application to be successful is to have a good overall rating in their
-                      respective stores. Both the Apple Store or Google Play Store have complex search algorithms to sort search results
-                      for users, and of course, <b>rating</b> and <b>user reviews</b> are part of them. Therefore, it is in the best interest of any owner of a mobile application to be aware of the users' feedback to the app's most recent updates.
+                      respective stores. Both the Apple Store or Google Play Store have complex search algorithms to sort results for users, and of course, <b>rating</b> and <b>user reviews</b> are part of them. Therefore, it is in the best interest of any owner of a mobile application to be aware of the users' feedback to the app's most recent updates.
                       <br /> <br />
                       A good example of the importance of this analysis is Instagram, whose release in March 2015 had a lot of issues, causing 11%
                       its users to give 1-star ratings and comment about bugs. Instagram addressed these issues and fixed them by May and it's rating skyrocketed.
