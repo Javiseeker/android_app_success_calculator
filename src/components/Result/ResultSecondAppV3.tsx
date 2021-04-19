@@ -221,8 +221,8 @@ class ResultSecondAppV3 extends React.Component<HistoryProps> {
             </div>
             <div className="dates-container">
               <p>{`Analyzed Reviews: ${this.state.appReviewsAnalysesLength}`}</p>
-              <p>{`Initial Date: ${moment(this.state.initialReviewDate, 'DD-MM-YYYY-DDTHH:mm:ss').toDate}`}</p>
-              <p>{`Latest Date: ${this.state.latestReviewDate}`}</p>
+              <p>{`Initial Date: ${moment(this.state.initialReviewDate, moment.ISO_8601)}`}</p>
+              <p>{`Initial Date: ${moment(this.state.latestReviewDate, moment.ISO_8601)}`}</p>
             </div>
             <div className="rating-container">
               <Rating appRating={Number(this.props.location.state.appToAnalyze.rating)} reviewBasedRating={this.state.appRating} />
