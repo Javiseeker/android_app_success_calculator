@@ -60,10 +60,10 @@ const SearchApps: React.FC<Props> = ({ q, setCanAnalyze, setAppsList }) => {
 
   if (q !== "") {
     if (dataObtained) {
-      iconElement = <Icon style={{ color: "green", fontSize: 30 }}>check</Icon>;
+      iconElement = <Icon style={{ color: "green", fontSize: 35 }}>check</Icon>;
     } else {
       iconElement = loader ? (
-        <CircularProgress />
+        <CircularProgress size={33}/>
       ) : errorFound ? (
         <Icon style={{ color: "red", fontSize: 30 }}>close</Icon>
       ) : null;

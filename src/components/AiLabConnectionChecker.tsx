@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import ailab from '../apis/ailab';
-const host: string = "www.google.com";
 
 const AiLabConnectionChecker: React.FC = () => {
   const [connectionStatus, setConnectionStatus] = useState('');

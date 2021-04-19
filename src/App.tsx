@@ -1,7 +1,6 @@
 import React from "react";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { Route, Switch } from "react-router-dom";
-
 import "./App.css";
 import NavigationBar from "./components/NavigationBar";
 import About from "./components/About/About";
@@ -9,8 +8,6 @@ import Layout from "./components/Layout/Layout";
 import LayoutSecondApp from "./components/Layout/LayoutSecondApp";
 import NotFound from "./components/NotFound/NotFound";
 import Footer from "./components/Footer/Footer";
-// import ResultSecondApp from "./components/Result/ResultSecondApp";
-// import ResultSecondAppV2 from "./components/Result/ResultSecondAppV2";
 import ResultSecondAppV3 from "./components/Result/ResultSecondAppV3";
 const theme = createMuiTheme({
   palette: {

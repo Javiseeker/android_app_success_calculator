@@ -1,0 +1,17 @@
+.stepper-container{
+  display: flex;
+  justify-content: center;
+  padding-top: 10%;
+}
+
+.information-container{
+  display: flex;
+  justify-content: center;
+  padding-bottom: 5%;
+  padding-top: 5%;
+}
+
+.paper-module{
+  height: 100%;
+  width: 90%;
+}

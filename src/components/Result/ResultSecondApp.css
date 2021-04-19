@@ -1,0 +1,27 @@
+.paper-module{
+  width:80%;
+}
+.results-layout{
+  display: flex;
+  justify-content: center;
+}
+
+.header-container{
+  align-items: center;
+}
+.dates-container{
+  align-items: center;
+}
+
+.results-container{
+  padding-top: 2%;
+}
+
+.rating-container{
+  width: 100%;
+}
+
+.button-container{
+  padding-top: 3%;
+  padding-bottom: 3%;
+}

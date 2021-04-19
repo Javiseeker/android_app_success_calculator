@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, Theme, createStyles, withStyles } from "@material-ui/core/styles";
-import { Stepper, Step, StepLabel, Typography, StepConnector, StepIconProps } from "@material-ui/core";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { Stepper, Step, StepLabel, Typography, StepConnector, StepIconProps, Paper, CircularProgress } from "@material-ui/core";
 import clsx from 'clsx';
 import Check from '@material-ui/icons/Check';
+import './ResultStepper.css';
 
 interface Props {
   step: number;
@@ -16,40 +17,45 @@ function getSteps() {
     "Generating Review-based Rating",
   ];
 }
-function getStepContent(stepIndex: number, reviewAnalysisResult:number) {
+
+function getStepContent(stepIndex: number, reviewAnalysisResult: number) {
   switch (stepIndex) {
     case 0:
-      return "Obtaining Application Reviews...";
+      return (
+        <Typography  color="primary">
+          Obtaining Application Reviews...
+        </Typography>
+      );
     case 1:
-      return `counter actual: ${reviewAnalysisResult}`;
+      return (
+        <CircularProgress size={50} />
+      );
     case 2:
-      return "Generating Review-based Rating...";
+      return (
+        <Typography  color="primary">
+          Generating Review-based Rating...
+        </Typography>
+      );
+
     default:
-      return "Unknown stepIndex";
+      return (
+        <Typography  color="primary">
+          Unknown Index...
+        </Typography>
+      );
   }
 }
 
-const stepperStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: "100%",
-    },
-    instructions: {
-      marginTop: theme.spacing(5),
-      marginBottom: theme.spacing(5),
-    },
-  })
-);
 
 const useQontoStepIconStyles = makeStyles({
   root: {
-    color: '#eaeaf0',
+    color: '#00acc1',
     display: 'flex',
     height: 22,
     alignItems: 'center',
   },
   active: {
-    color: '#784af4',
+    color: '#ff6f00',
   },
   circle: {
     width: 8,
@@ -58,7 +64,7 @@ const useQontoStepIconStyles = makeStyles({
     backgroundColor: 'currentColor',
   },
   completed: {
-    color: '#784af4',
+    color: '#ff6f00',
     zIndex: 1,
     fontSize: 18,
   },
@@ -67,7 +73,6 @@ const useQontoStepIconStyles = makeStyles({
 function QontoStepIcon(props: StepIconProps) {
   const classes = useQontoStepIconStyles();
   const { active, completed } = props;
-
   return (
     <div
       className={clsx(classes.root, {
@@ -87,59 +92,60 @@ const QontoConnector = withStyles({
   },
   active: {
     '& $line': {
-      borderColor: '#784af4',
+      borderColor: '#00acc1',
     },
   },
   completed: {
     '& $line': {
-      borderColor: '#784af4',
+      borderColor: '#00acc1',
     },
   },
   line: {
-    borderColor: '#eaeaf0',
+    borderColor: '#00acc1',
     borderTopWidth: 3,
     borderRadius: 1,
   },
 })(StepConnector);
 
 const ResultStepper: React.FC<Props> = ({ step, reviewAnalysisResult }: Props) => {
-  const classes = stepperStyles();
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
   useEffect(() => {
     setActiveStep(step);
   }, [step]);
-
-  // console.log(`this is the current score: ${reviewAnalysisResult}`)
+  console.log(reviewAnalysisResult);
   return (
-    <div className={classes.root}>
-      <div>
-        {activeStep === steps.length ? (
-          <div>
-            <Typography className={classes.instructions}>
-              All steps completed
+    <React.Fragment>
+      <div className="information-container">
+        <Paper className="paper-module" elevation={15}>
+          {activeStep === steps.length ? (
+            <div className="information-container">
+              <Typography variant="h3" color="primary">
+                All steps completed
             </Typography>
-          </div>
-        ) : (
-          <div>
-            <Typography className={classes.instructions}>
+            </div>
+          ) : (
+            <div className="information-container">
               {getStepContent(activeStep, reviewAnalysisResult)}
-            </Typography>
+            </div>
+          )}
+        </Paper>
+      </div>
+      <div className="stepper-container">
+        <Paper className="paper-module" elevation={15}>
+          <div>
+            <Stepper activeStep={activeStep} alternativeLabel connector={<QontoConnector />} >
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
           </div>
-        )}
+        </Paper>
       </div>
-
-      <div >
-        <Stepper activeStep={activeStep} alternativeLabel connector={<QontoConnector />} >
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-      </div>
-    </div>
+    </React.Fragment>
   );
 };
 

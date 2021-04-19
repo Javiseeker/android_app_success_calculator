@@ -23,11 +23,10 @@
   padding-top: 8%;
   display: flex;
   justify-content: center;
-  height: 100%;
 }
 
 .analyze-button{
-  padding-top: 1%;
+  padding-top: 2%;
 }
 
 .app-name{

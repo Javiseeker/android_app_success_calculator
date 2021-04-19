@@ -11,11 +11,11 @@ import { useHistory } from "react-router-dom";
 const LayoutSecondApp: React.FC = () => {
   const [appName, setAppName] = useState("");
   const [canAnalyze, setCanAnalyze] = useState(false);
-  // const searchAppsRef = useRef(null);
   const [appsList, setAppsList] = useState([]);
   const [chosenApp, setChosenApp] = useState<any>({})
   const history = useHistory();
   const onChangeAppName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setChosenApp({});
     setAppName(e.target.value);
   };
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,6 +28,20 @@ const LayoutSecondApp: React.FC = () => {
       },
     });
   };
+  function onChangeAutocomplete(event: React.ChangeEvent<{}>, value: any) {
+    event.preventDefault();
+    setChosenApp(value);
+  }
+
+  const isDisabled = () =>{
+    if(JSON.stringify(chosenApp) === '{}' || chosenApp === null){
+      return true;
+    } else{
+      return !canAnalyze;
+    }
+    
+  }
+
   const ActivateMediaQueries = () => {
     return {
       isSm: useMedia("(max-width: 640px)"),
@@ -35,7 +49,6 @@ const LayoutSecondApp: React.FC = () => {
     };
   };
   const windowWidth = ActivateMediaQueries();
-
   let renderedLayout = null;
   if (windowWidth.isMd) {
     renderedLayout = (
@@ -89,7 +102,7 @@ const LayoutSecondApp: React.FC = () => {
                     variant="contained"
                     color="secondary"
                     endIcon={<Icon>poll</Icon>}
-                    disabled={!canAnalyze}
+                    disabled={isDisabled()}
                   >
                     Analyze
                   </Button>
@@ -123,10 +136,9 @@ const LayoutSecondApp: React.FC = () => {
               >
                 <div className="app-name">
                   <Autocomplete
-                    onChange={(event, value) => { setChosenApp(value) }}
+                    onChange={(event, value) => { onChangeAutocomplete(event, value) }}
                     id="combo-box-demo"
                     options={appsList}
-                    getOptionLabel={(option: any) => option.name}
                     style={{ width: "30%" }}
                     renderInput={(params) =>
                       <TextField
@@ -169,3 +181,4 @@ const LayoutSecondApp: React.FC = () => {
 };
 
 export default LayoutSecondApp;
+

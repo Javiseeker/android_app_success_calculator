@@ -55,9 +55,8 @@ const Layout: React.FC = () => {
     ) : (
       <div className="result-container">
         <Paper
-          className="paper-module"
           elevation={15}
-          style={{ borderRadius: "15px" }}
+          style={{ borderRadius: "15px",   height: '100%', width: '40%' }}
         >
           <Result result={result} />
         </Paper>
@@ -115,8 +114,11 @@ const Layout: React.FC = () => {
               </form>
             </Paper>
           </div>
+        </div>
+        <div>
           {resultsRenderer}
         </div>
+
       </React.Fragment>
     );
   }
@@ -167,6 +169,8 @@ const Layout: React.FC = () => {
               </form>
             </Paper>
           </div>
+        </div>
+        <div>
           {resultsRenderer}
         </div>
       </React.Fragment>
